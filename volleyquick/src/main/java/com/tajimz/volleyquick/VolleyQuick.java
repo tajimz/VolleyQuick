@@ -1,7 +1,10 @@
 package com.tajimz.volleyquick;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,12 +28,15 @@ public class VolleyQuick {
         void onSuccess(JSONArray jsonArray);
         void onFailed(VolleyError volleyError);
     }
-    public static void requestObj(Context context, String url, JSONObject jsonObject, ObjListener objListener ){
+    public static void requestObj(Context context,int loading, int method,  String url, JSONObject jsonObject, ObjListener objListener ){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
+        if (loading != 0) startLoading(context, loading);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 objListener.onSuccess(jsonObject);
+                endLoading();
 
             }
         }, new Response.ErrorListener() {
@@ -44,17 +50,20 @@ public class VolleyQuick {
     }
 
 
-    public static void requestArray(Context context, String url,JSONArray jsonArray, ArrayListener arrayListener ){
+    public static void requestArray(Context context,int loading, int method,  String url,JSONArray jsonArray, ArrayListener arrayListener ){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url, jsonArray, new Response.Listener<JSONArray>() {
+        if (loading != 0) startLoading(context, loading);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(method, url, jsonArray, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray jsonArray) {
                 arrayListener.onSuccess(jsonArray);
+                endLoading();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 arrayListener.onFailed(volleyError);
+                endLoading();
             }
         });
         requestQueue.add(jsonArrayRequest);
@@ -73,6 +82,24 @@ public class VolleyQuick {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static AlertDialog alertDialog;
+    private static void startLoading(Context context, int view){
+        if (alertDialog != null) endLoading();
+        alertDialog = new AlertDialog.Builder(context)
+                .setView(LayoutInflater.from(context).inflate(view, null))
+                .setCancelable(false)
+                .create();
+
+        alertDialog.show();
+
+
+    }
+
+    private static void endLoading(){
+        if (alertDialog != null && alertDialog.isShowing())
+            alertDialog.dismiss();
     }
 
 }
