@@ -92,6 +92,9 @@ public class VolleyQuick {
                 .setCancelable(false)
                 .create();
 
+        if (alertDialog.getWindow() != null)
+            alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
         alertDialog.show();
 
 
