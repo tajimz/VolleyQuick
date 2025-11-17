@@ -19,12 +19,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class VolleyQuick {
-    private interface ObjListener {
+    public interface ObjListener {
         void onSuccess(JSONObject jsonObject);
         void onFailed(VolleyError volleyError);
     }
 
-    private interface ArrayListener {
+    public interface ArrayListener {
         void onSuccess(JSONArray jsonArray);
         void onFailed(VolleyError volleyError);
     }
