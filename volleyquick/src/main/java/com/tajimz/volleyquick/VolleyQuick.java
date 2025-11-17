@@ -92,8 +92,16 @@ public class VolleyQuick {
                 .setCancelable(false)
                 .create();
 
-        if (alertDialog.getWindow() != null)
+        if (alertDialog.getWindow() != null) {
+            // Make background transparent
             alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+            // Force wrap_content for width and height
+            alertDialog.getWindow().setLayout(
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
 
         alertDialog.show();
 
