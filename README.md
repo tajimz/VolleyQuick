@@ -5,7 +5,7 @@
 In your module-level `build.gradle` (usually `app/build.gradle`), add:
 
 ```gradle
-implementation 'com.github.tajimz:volleyquick:Tag'
+implementation 'com.github.tajimz:volleyquick:1.2.1'
 ```
 
 **2️⃣ Add JitPack repository**
